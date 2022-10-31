@@ -72,6 +72,9 @@ impl Client {
 
     fn config(&self) -> Result<Builder, Error> {
         let mut builder = Config::builder();
+        if std::env::var("S2N_KTLS").is_ok() {
+            builder.enable_ktls()?;
+        }
         builder.set_security_policy(&DEFAULT_TLS13)?;
         for ca in self.opts.certificate_authorities() {
             builder.trust_pem(ca.pem.as_bytes())?;

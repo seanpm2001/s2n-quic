@@ -115,6 +115,9 @@ impl Server {
         let (cert, private_key) = self.opts.certificate();
 
         let mut builder = Config::builder();
+        if std::env::var("S2N_KTLS").is_ok() {
+            builder.enable_ktls()?;
+        }
         builder.set_security_policy(&DEFAULT_TLS13)?;
         builder.load_pem(cert.pem.as_bytes(), private_key.pem.as_bytes())?;
 
