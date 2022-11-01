@@ -6,7 +6,7 @@ use netbench_driver::Allocator;
 use s2n_tls::{
     config::{Builder, Config},
     error::Error,
-    security::DEFAULT_TLS13,
+    security::DEFAULT,
 };
 use s2n_tls_tokio::{TlsConnector, TlsStream};
 use std::{collections::HashSet, future::Future, net::SocketAddr, pin::Pin, sync::Arc};
@@ -75,7 +75,7 @@ impl Client {
         if std::env::var("S2N_KTLS").is_ok() {
             builder.enable_ktls()?;
         }
-        builder.set_security_policy(&DEFAULT_TLS13)?;
+        builder.set_security_policy(&DEFAULT)?;
         for ca in self.opts.certificate_authorities() {
             builder.trust_pem(ca.pem.as_bytes())?;
         }
