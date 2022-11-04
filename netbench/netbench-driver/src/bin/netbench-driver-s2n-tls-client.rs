@@ -6,10 +6,13 @@ use netbench_driver::Allocator;
 use s2n_tls::{
     config::{Builder, Config},
     error::Error,
-    security::DEFAULT,
+    security,
 };
 use s2n_tls_tokio::{TlsConnector, TlsStream};
-use std::{collections::HashSet, future::Future, net::SocketAddr, pin::Pin, sync::Arc};
+use std::{
+    collections::HashSet, future::Future, net::SocketAddr, os::unix::prelude::AsRawFd, pin::Pin,
+    sync::Arc,
+};
 use structopt::StructOpt;
 use tokio::net::TcpStream;
 
@@ -75,7 +78,7 @@ impl Client {
         if std::env::var("S2N_KTLS").is_ok() {
             builder.enable_ktls()?;
         }
-        builder.set_security_policy(&DEFAULT)?;
+        builder.set_security_policy(&security::DEFAULT_TLS13)?;
         for ca in self.opts.certificate_authorities() {
             builder.trust_pem(ca.pem.as_bytes())?;
         }
@@ -119,6 +122,9 @@ impl<'a> netbench::client::Client<'a> for ClientImpl {
 
         let fut = async move {
             let conn = TcpStream::connect(addr).await?;
+
+            let fd = conn.as_raw_fd();
+            println!("netbench client---------fd: {}", fd);
 
             if !nagle {
                 let _ = conn.set_nodelay(true);

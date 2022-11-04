@@ -6,7 +6,7 @@ use netbench_driver::Allocator;
 use s2n_tls::{
     config::{Builder, Config},
     error::Error,
-    security::DEFAULT,
+    security,
 };
 use s2n_tls_tokio::TlsAcceptor;
 use std::{collections::HashSet, os::unix::prelude::AsRawFd, sync::Arc};
@@ -75,7 +75,7 @@ impl Server {
             config: Option<multiplex::Config>,
         ) -> Result<()> {
             let fd = connection.as_raw_fd();
-            println!("netbench---------fd: {}", fd);
+            println!("netbench server---------fd: {}", fd);
 
             let mut timer = netbench::timer::Tokio::default();
             let before = timer.now();
@@ -121,7 +121,7 @@ impl Server {
         if std::env::var("S2N_KTLS").is_ok() {
             builder.enable_ktls()?;
         }
-        builder.set_security_policy(&DEFAULT)?;
+        builder.set_security_policy(&security::DEFAULT_TLS13)?;
         builder.load_pem(cert.pem.as_bytes(), private_key.pem.as_bytes())?;
 
         Ok(builder)
