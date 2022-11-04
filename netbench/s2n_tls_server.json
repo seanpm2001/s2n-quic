@@ -1,5 +1,0 @@
-{"pid":276688,"driver":"./target/debug/netbench-driver-s2n-tls-server","scenario":"./target/netbench/request_response.json","start_time":{"secs_since_epoch":1667548541,"nanos_since_epoch":430779095}}
-{"t":0,"memory":8953856000,"virtual_memory":79163392000}
-{"t":1000,"cycles":3244,"instructions":4390,"branches":5436,"memory":110374912000,"virtual_memory":184238080000,"syscalls":154565,"connections":1,"accept":1,"allocs":{"count":4160,"total":100251911},"reallocs":{"count":35,"total":47910},"deallocs":{"count":167,"total":61802},"connect_time":{"count":1,"total":1211},"receive":{"0:0":{"count":1208,"total":624089964}}}
-{"t":2000,"cpu":101.08424,"cycles":4144,"instructions":5930,"branches":7218,"memory":110374912000,"virtual_memory":184238080000,"syscalls":213894,"receive":{"0:0":{"count":1671,"total":864856128}}}
-{"t":3000,"cpu":55.860348,"cycles":2311,"instructions":3304,"branches":4026,"memory":110374912000,"virtual_memory":184238080000,"syscalls":119568,"allocs":{"count":3,"total":44},"deallocs":{"count":29,"total":40912},"connect_time":{"count":1,"total":1211},"receive":{"0:0":{"count":934,"total":482890944}}}

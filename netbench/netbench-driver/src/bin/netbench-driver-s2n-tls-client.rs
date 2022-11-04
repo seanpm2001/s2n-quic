@@ -130,7 +130,7 @@ impl<'a> netbench::client::Client<'a> for ClientImpl {
                 let _ = conn.set_nodelay(true);
             }
 
-            let conn = connector.connect(&server_name, conn).await?;
+            let conn = connector.connect(&server_name, conn, fd).await?;
             let conn = Box::pin(conn);
             let conn = duplex::Connection::new(id, conn);
             let conn: Self::Connection = netbench::Driver::new(scenario, conn);
@@ -172,7 +172,10 @@ impl<'a> netbench::client::Client<'a> for MultiplexClientImpl {
                 let _ = conn.set_nodelay(true);
             }
 
-            let conn = connector.connect(&server_name, conn).await?;
+            let fd = conn.as_raw_fd();
+            println!("netbench client---------fd: {}", fd);
+
+            let conn = connector.connect(&server_name, conn, fd).await?;
             let conn = Box::pin(conn);
             let conn = multiplex::Connection::new(id, conn, config);
             let conn: Self::Connection = netbench::Driver::new(scenario, conn);
